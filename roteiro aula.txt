@@ -124,10 +124,9 @@ GO;
 
 
 ============================
+dotnet new sln -o MyWebApp
 dotnet new mvc -o MyWebApp.Client
-
 dotnet new classlib -o MyWebApp.DataStore
-
 dotnet new mstest -o MyWebApp.DataStoreTest
 
 dotnet sln MyWebApp.sln add .\MyWebApp.Client\MyWebApp.Client.csproj .\MyWebApp.DataStore\MyWebApp.DataStore.csproj .\MyWebApp.DataStoreTest\MyWebApp.DataStoreTest.csproj
@@ -135,3 +134,5 @@ dotnet sln MyWebApp.sln add .\MyWebApp.Client\MyWebApp.Client.csproj .\MyWebApp.
 dotnet add .\MyWebApp.Client\MyWebApp.Client.csproj reference .\MyWebApp.DataStore\MyWebApp.DataStore.csproj
 
 dotnet add .\MyWebApp.DataStoreTest\MyWebApp.DataStoreTest.csproj reference .\MyWebApp.DataStore\MyWebApp.DataStore.csproj
+
+dotnet test .\MyWebApp.DataStoreTest\MyWebApp.DataStoreTest.csproj
