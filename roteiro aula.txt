@@ -14,6 +14,8 @@ code .
 Criar webapp + sql
 senha banco !QAZ.2wsx.
 ===
+FAZER SCAFFOLD DO BANCO ANTES DISSO
+
     public enum ECategoria{
         Aventura,
         Terror,
@@ -83,6 +85,9 @@ Invoke-WebRequest -Uri https://modulo1pips.azurewebsites.net/api/filmes -Content
 
 Modulo 2
 
+ADO
+Popular banco com seed, ensurecreated
+
 dotnet new classlib --name Modulo2.DAL --output c:\dev\aulas\modulo2\modulo2.DAL
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 
@@ -114,3 +119,19 @@ SELECT * FROM Products
 GO;
 
 (localdb)\\MSSQLLocalDB 
+
+
+
+
+============================
+dotnet new mvc -o MyWebApp.Client
+
+dotnet new classlib -o MyWebApp.DataStore
+
+dotnet new mstest -o MyWebApp.DataStoreTest
+
+dotnet sln MyWebApp.sln add .\MyWebApp.Client\MyWebApp.Client.csproj .\MyWebApp.DataStore\MyWebApp.DataStore.csproj .\MyWebApp.DataStoreTest\MyWebApp.DataStoreTest.csproj
+
+dotnet add .\MyWebApp.Client\MyWebApp.Client.csproj reference .\MyWebApp.DataStore\MyWebApp.DataStore.csproj
+
+dotnet add .\MyWebApp.DataStoreTest\MyWebApp.DataStoreTest.csproj reference .\MyWebApp.DataStore\MyWebApp.DataStore.csproj

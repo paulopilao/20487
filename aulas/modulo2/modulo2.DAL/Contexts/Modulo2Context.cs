@@ -8,5 +8,8 @@ namespace modulo2.DAL.Contexts
         public Modulo2Context(DbContextOptions<Modulo2Context> options): base(options){}
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }
