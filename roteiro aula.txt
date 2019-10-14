@@ -107,7 +107,7 @@ dotnet add reference ../Modulo2.Dal/Modulo2.Dal.csproj
 dotnet new console --name Modulo2.ConsoleApp --output c:\dev\aulas\modulo2\modulo2.ConsoleApp
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
  dotnet restore
- 
+ ========================================================
 CREATE PROCEDURE sp_selectProduct @nome varchar(50)
 AS
 SELECT * FROM Products
