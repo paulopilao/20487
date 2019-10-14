@@ -1,0 +1,116 @@
+
+
+20487 
+
+ir fazendo e subindo para o git
+
+Modulo 1
+dotnet new webapi --name Modulo1.Api --output c:\dev\aulas\Modulo1\Modulo1.Api
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer.Design
+dotnet restore
+code .
+====
+Criar webapp + sql
+senha banco !QAZ.2wsx.
+===
+    public enum ECategoria{
+        Aventura,
+        Terror,
+        Drama,
+        Comedia
+
+    }
+    public class Filme
+    {
+        public Filme(int id, string nome, ECategoria categoria, int anoLancamento)
+        {
+            this.Id = id;
+            this.Nome = nome;
+            this.Categoria = categoria;
+            this.AnoLancamento = anoLancamento;
+
+        }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public ECategoria Categoria { get; set; }
+        public int AnoLancamento { get; set; }
+    }
+======	
+CREATE TABLE Filmes 
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nome varchar(255),
+    Categoria int,
+    AnoLancamento int
+)
+==========
+
+dotnet ef DbContext Scaffold "Data Source=tcp:20487.database.windows.net,1433;Initial Catalog=modulo1pipsdb;User Id=pilao@20487.database.windows.net;Password=!QAZ.2wsx.;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c FilmeContext
+
+=======
+arrumar startup para a connection string 
+            services.AddDbContext<FilmeContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+incluir connectionstring
+  "ConnectionStrings": {
+    "defaultConnection": "Data Source=tcp:20487.database.windows.net,1433;Initial Catalog=modulo1pipsdb;User Id=pilao@20487.database.windows.net;Password=!QAZ.2wsx.;"
+  }
+  ======
+criar o controller para o filme
+criar a pasta properties/PublishProfiles
+e criar o arquivo Azure.pubxml
+colocar esse texto la
+<Project>
+    <PropertyGroup>
+      <PublishProtocol>Kudu</PublishProtocol>
+      <PublishSiteName>modulo1pips</PublishSiteName>
+      <UserName>paulopilao</UserName>
+      <Password>1234asdf</Password>
+    </PropertyGroup>
+</Project>
+mudar a senha do ftp no azure antes
+dotnet publish /p:PublishProfile=Azure /p:Configuration=Release
+
+======
+fazer o post no controller e publicar de novo
+incluir registro via powershell
+$postParams = "{
+    'nome': 'De volta para o futuro',
+    'categoria': 2,
+    'anoLancamento': 1985}"
+Invoke-WebRequest -Uri https://modulo1pips.azurewebsites.net/api/filmes -ContentType "application/json" -Method POST -Body $postParams
+
+
+Modulo 2
+
+dotnet new classlib --name Modulo2.DAL --output c:\dev\aulas\modulo2\modulo2.DAL
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+
+cria Web App + SQL
+CREATE TABLE Clientes 
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nome varchar(255),
+    Cpf varchar(255)
+)
+
+CREATE TABLE Pedidos 
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    ValorTotal decimal,
+    ClienteId int
+)
+dotnet new console --name Modulo2.ConsoleApp --output c:\dev\aulas\modulo2\modulo2.ConsoleApp
+dotnet new webapi --name Modulo2.Api --output c:\dev\aulas\Modulo2\Modulo2.Api
+dotnet add reference ../Modulo2.Dal/Modulo2.Dal.csproj
+
+dotnet new console --name Modulo2.ConsoleApp --output c:\dev\aulas\modulo2\modulo2.ConsoleApp
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+ dotnet restore
+ 
+CREATE PROCEDURE sp_selectProduct @nome varchar(50)
+AS
+SELECT * FROM Products
+GO;
+
+(localdb)\\MSSQLLocalDB 
