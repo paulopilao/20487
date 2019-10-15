@@ -28,9 +28,11 @@ namespace Demonstracao3.Host.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Pessoa> Get(int id)
         {
-            return "value";
+            Pessoa pessoa = _pessoas.FirstOrDefault(x => x.Id == id);
+                if  (pessoa==null) return NotFound();
+            return pessoa;
         }
 
         // POST api/values

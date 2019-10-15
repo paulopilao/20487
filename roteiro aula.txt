@@ -84,6 +84,9 @@ Invoke-WebRequest -Uri https://modulo1pips.azurewebsites.net/api/filmes -Content
 
 
 Modulo 2
+Demonstracao 1
+dotnet new console --name Demonstracao1 --output c:\dev\20487\aulas\modulo2\Demonstracao1
+
 
 ADO
 Popular banco com seed, ensurecreated
@@ -125,10 +128,10 @@ GO;
 ============================
 Modulo 3
 Demonstracao 1
-dotnet new webapi --name Demonstracao1 --output c:\dev\tmp\Demonstracao1
+dotnet new webapi --name Demonstracao1 --output c:\dev\20487\aulas\modulo3\Demonstracao1
 
 Demonstracao 2
-dotnet new webapi --name Demonstracao2 --output c:\dev\tmp\Demonstracao2
+dotnet new webapi --name Demonstracao2 --output c:\dev\20487\aulas\modulo3\Demonstracao2
 
 Demonstracao 3 e 4 (colocando o return notfound)
 dotnet new sln -o Demonstracao3 --output c:\dev\20487\aulas\modulo3\Demonstracao3
@@ -141,6 +144,11 @@ dotnet add package Microsoft.AspNet.WebApi.Client
 dotnet restore
 entrar no client e digitar
 dotnet dev-certs https --trust
+
+Demonstracao 5
+dotnet new webapi --name Demonstracao4 --output c:\dev\20487\aulas\modulo3\Demonstracao5
+
+
 ============================
 dotnet new sln -o MyWebApp
 dotnet new mvc -o MyWebApp.Client
