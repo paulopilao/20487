@@ -204,9 +204,163 @@ public class LoggingPilaoMiddleware
         }
     }
 alterar startup
+================================================
 	
+Modulo 5
+
+demonstracao 1
+cd c:\Allfiles\Mod05\DemoFiles\HostInWindowsService
+dotnet publish --configuration Release --output c:\Allfiles\Mod05\DemoFiles\HostInWindowsService
+sc create HotelsService binPath= "c:\Allfiles\Mod05\DemoFiles\HostInWindowsService\BlueYonder.Hotels.Service.exe"
+
+demonstracao 2
+docker run -it --rm -p 8000:80 --name aspnetcore_sample microsoft/dotnet-samples:aspnetapp
+dotnet new webapi --name BlueYonder.Hotels.Service --output C:\Allfiles\Mod05\DemoFiles\Host_In_Docker
+  dotnet new webapi --name BlueYonder.Hotels.Service --output C:\Allfiles\Mod05\DemoFiles\Host_In_Docker
+  cd C:\Allfiles\Mod05\DemoFiles\Host_In_Docker
+
+
 
 ============================
+Modulo 6
+
+1.Criar uma aplicacao no Visual Studio , criar um site no azure e fazer o deploy via publish (normal)
+2.Linux
+	1. Criar uma vm linux no azure	
+	2. CRiar uma api e colocar o codigo abaixo dentro do csproj no meio de propertygroup
+		<RuntimeIdentifiers>win10-x64;osx.10.11-x64;ubuntu.16.10-x64</RuntimeIdentifiers>
+	3. Gerar o publishdotnet 
+		publish -c release -r ubuntu.16.10-x64
+	4. Vai na vm e connect
+		pega o ssh e conecta ssh pilao@23.99.195.238
+		cd /var
+		sudo mkdir demosntracao
+		sudo chown pilao demonstracao
+	5. abre outro dos , vai para dev\20487\aulas\modulo06\linuxapp\bin\release\netcoreapp2.2 e digita:
+		 scp -r .\ubuntu.18.10-x64\ pilao@23.99.195.238:/var/demonstracao
+	6. na vm linux cd /
+		sudo -s
+		nginx=stable
+		add-apt-repository ppa:nginx/$nginx
+		apt-get update
+		apt-get install nginx
+		sudo service nginx start
+	7. no browser http://<server_IP_address>/index.nginx-debian.html
+	8. no linux
+		cd /etc/nginx/sites-available/
+		sudo vi default
+		ESC + i
+		no location mudar para isso
+		proxy_pass         http://localhost:5000;
+		proxy_http_version 1.1;
+		proxy_set_header   Upgrade $http_upgrade;
+		proxy_set_header   Connection keep-alive;
+		proxy_set_header   Host $host;
+		proxy_cache_bypass $http_upgrade;
+		proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header   X-Forwarded-Proto $scheme;
+		ESC + : + x + Enter.
+		sudo nginx -t
+		sudo nginx -s reload
+		cd /var/demonstracao/ubuntu.18.10-x64/publish/
+		chmod a+x ./linuxapp
+		./linuxapp
+		ver no browser de novo com o /api/values
+3. CI
+	1. Criar um site no azure 
+	2. criar um projeto no azuredevops https://dev.azure.com/paulopilao
+	3. fazer clone 
+	4. Criar uma app no .net core webapi e subir fazendo push
+	5. criar o build e o publish
+4. Stage slot
+	1. criar um site no azure  F1
+	2. alterar as credenciais ftp
+	3. adicionar um slot
+	4. criar um projeto no .netcore webapi
+	5. colocar dois perfis de publicacao
+	6. gerar a publicacao
+	dotnet publish /p:PublishProfile=Azure /p:Configuration=Release
+	mudar o controller para aparecer uma imagem 
+	dotnet publish /p:PublishProfile=Staging /p:Configuration=Release
+	https://mod6demo4-{YourInitials}-staging.azurewebsites.net/api/values
+5. API management
+	1. criar um API management
+	2. adicionar essa api => 	http://conferenceapi.azurewebsites.net/?format=json e testar ela
+	
+6. alterar api management
+	1. <rate-limit-by-key calls="2" renewal-period="60" counter-key="@(context.Subscription.Id)" />
+
+
+===========================
+Modulo 7
+1. Storage 
+		1. Criar um storage  Locally-redundant storage (LRS).
+		2. Criar um container Public access level : Private (no anonymous access).
+		3. Pegar em settings a connection string
+		4. Ir na app do modu7 Mod7Demo1Blob e colocar a connection string
+		5. digitar dotnet dev-certs https --trust
+		6. no powershell digitar =>[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri https://localhost:5001/api/reservation/createvoucher -ContentType "application/json" -Method POST -Body "'pips'"
+		7. depois pegar o guid e 
+		$request = Invoke-WebRequest -Uri https://localhost:5001/api/reservation/Voucher/{GUID}  -Method Get
+		$request.Content
+
+2. Import de dados 
+		1. Entrar no storage criado acima 
+		2. criar um container qquer
+		3. subir um bacpak que ta em Allfiles\Mod07\Demofiles\Mod7Demo2bacpac
+		4. ir em um banco de dados e acessar o server dele e deois importar esse bacppac
+		5. mudar o firewall no banco e acessar via client qquer
+3. Mongo
+		1. criar um banco no cosmos
+		2. colocar mydb/customers/customerId
+		3. baixar o mongo , pegar a string de conexao e executar os comandos por la
+		db.customers.find()
+		show collections
+		show databases
+		db.customers.insert({customerId: "5", firstName: "Sean", lastName: "Stewart"})
+		db.customers.insertMany([
+    {
+      customerId: "1",
+      firstName: "Kevin",
+      lastName: "Liu"
+    },
+    {
+      customerId: "2",
+      firstName: "Martin",
+      lastName: "Weber"
+    },
+    {
+      customerId: "3",
+      firstName: "George",
+      lastName: "Li"
+    },
+    {
+      customerId: "4",
+      firstName: "Lisa",
+      lastName: "Miller"
+    },
+    {
+      customerId: "5",
+      firstName: "Sean",
+      lastName: "Stewart"
+    }
+    ])
+	db.customers.find()
+	 db.customers.count()
+4. Graph
+	Criar um banco cosmosdb com graph
+	usar pessoas como exemplo
+		
+		
+Q coisa feia eh essa ai atras do seu  oculos
+102 negao		
+		
+
+	
+		
+
+
+=============================
 dotnet new sln -o MyWebApp
 dotnet new mvc -o MyWebApp.Client
 dotnet new classlib -o MyWebApp.DataStore
