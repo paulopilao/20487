@@ -350,7 +350,36 @@ Modulo 7
 4. Graph
 	Criar um banco cosmosdb com graph
 	usar pessoas como exemplo
-		
+	
+Modulo8
+1. Log
+	1. Criar um projeto e setar o log
+	colocar no program depois do WebHost.CreateDefaultBuilder(args)
+	 .ConfigureLogging((hostingContext, logging) => 
+	 {
+		 logging.AddConsole();
+		 logging.AddEventSourceLogger();
+	 })	
+	 2. Colocar no controller 
+	 public ValuesController(ILogger<ValuesController> logger)
+		{
+			_logger = logger;
+		}
+	 private readonly ILogger _logger;
+	3. botar isso => _logger.LogInformation("Getting all values");
+	
+2. Log4net
+	1. Colocar isso no program
+	        public static void Main(string[] args)
+        {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            CreateWebHostBuilder(args).Build().Run();
+        }
+	2. Isso no controller
+	                private static readonly ILog _logger = LogManager.GetLogger(typeof(ValuesController));
+	3. Colocar o config que esta no repo 
+
 		
 Q coisa feia eh essa ai atras do seu  oculos
 102 negao		
