@@ -350,6 +350,121 @@ Modulo 7
 4. Graph
 	Criar um banco cosmosdb com graph
 	usar pessoas como exemplo
+	
+Modulo8
+1. Log
+	1. Criar um projeto e setar o log
+	colocar no program depois do WebHost.CreateDefaultBuilder(args)
+	 .ConfigureLogging((hostingContext, logging) => 
+	 {
+		 logging.AddConsole();
+		 logging.AddEventSourceLogger();
+	 })	
+	 2. Colocar no controller 
+	 public ValuesController(ILogger<ValuesController> logger)
+		{
+			_logger = logger;
+		}
+	 private readonly ILogger _logger;
+	3. botar isso => _logger.LogInformation("Getting all values");
+	
+2. Log4net
+	1. Colocar isso no program
+	        public static void Main(string[] args)
+        {
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+            CreateWebHostBuilder(args).Build().Run();
+        }
+	2. Isso no controller
+	                private static readonly ILog _logger = LogManager.GetLogger(typeof(ValuesController));
+	3. Colocar o config que esta no repo 
+
+3. Serilog
+	dotnet add package Serilog.AspNetCore
+	dotnet add package Serilog.Settings.Configuration 
+	dotnet add package Serilog.Sinks.ColoredConsole
+	dotnet add package  Serilog.Sinks.File
+	1. colocar o cod abaixo no program logo depois de  UseStartup<Startup>()
+	.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+    .ReadFrom.Configuration(hostingContext.Configuration)
+    .Enrich.FromLogContext()
+	.WriteTo.File("loggggggpipipipipipipipis-.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Console());
+	2. colocar no controller 
+	        ILogger<ValuesController> logger;
+        public ValuesController(ILogger<ValuesController> logger)
+        {
+            this.logger = logger;
+
+        }
+
+4. Linux 
+	
+	dotnet new webapi -n MonitorLTTng    
+	1. criar o arquivo Dockerfile
+FROM microsoft/dotnet:sdk AS build-env
+WORKDIR /app
+
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Build runtime image
+FROM microsoft/dotnet:aspnetcore-runtime
+WORKDIR /app
+COPY --from=build-env /app/out .
+# Enviroment variable
+ENV COMPlus_EnableEventLog 1
+ENTRYPOINT ["dotnet", "MonitorLTTng.dll"]
+
+	2. 
+	docker build -t monitor .
+	docker run -d -p 8080:80 --name myapp monitor
+docker exec -it myapp bash
+apt update
+apt-get install software-properties-common
+apt-get update
+apt-get install lttng-tools lttng-modules-dkms liblttng-ust-dev
+	lttng create exceptions-trace
+lttng add-context --userspace --type vpid
+lttng add-context --userspace --type vtid
+lttng add-context --userspace --type procname
+lttng enable-event --userspace --tracepoint DotNETRuntime:*
+lttng start
+http://localhost:8080/api/values
+lttng stop
+lttng destroy
+babeltrace /root/lttng-traces/exceptions-trace
+exit
+
+
+5. application insights
+	1. powershell como adm
+	Install-Module azurerm -AllowClobber -MinimumVersion 5.4.1.
+	2 ir na pasta [repository root]\AllFiles\Mod08\DemoFiles\ApplicationInsights\Setup. e rodar  .\createAzureServices.ps1
+	3 ir no azure e ver a applicacao
+	4 depois gerar o applicationinsights
+	5 depois ver rodando ao vivo
+	fazer varias requisicoes
+	criar o bat
+	:LOOP
+
+TIMEOUT /T 1
+curl https://blueyondermod08demo5paulopilao.azurewebsites.net/api/values/aaa
+
+goto LOOP
+
+	6. colocar no controller 
+	            var client = new HttpClient();
+     var a=client.GetAsync("http://httpbin.org/get").Result;
+	 e ver dependencia no live
+		
+		
 		
 5. cdn
 	1.Criar um storage 
