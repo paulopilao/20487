@@ -351,7 +351,20 @@ Modulo 7
 	Criar um banco cosmosdb com graph
 	usar pessoas como exemplo
 		
-		
+5. cdn
+	1.Criar um storage 
+	2. SETTINGS, click Static website(Preview)
+	3. Ver o container novo e incluir os arquivos nele
+	4. Testa e Guarda a url
+	5. Cria um cdn e vincula com o storage
+
+6. Redis
+	1. Criar um redis
+	2. Vincular ao projeto do modulo
+	3. Verificar como funciona
+	
+	
+
 Q coisa feia eh essa ai atras do seu  oculos
 102 negao		
 		
